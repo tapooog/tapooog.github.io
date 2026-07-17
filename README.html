@@ -16,7 +16,11 @@
       --titanium: #86868B;
       --display-blue: #2997FF;
       --peak-amber: #F4A261;
-      
+
+      --gradient-aurora: linear-gradient(115deg, #2997FF 0%, #64D2FF 22%, #BF5AF2 50%, #FF6B9D 72%, #FFB454 100%);
+      --gradient-cool: linear-gradient(115deg, #2997FF 0%, #5AC8FA 45%, #66F9D6 100%);
+      --gradient-warm: linear-gradient(115deg, #FFB454 0%, #FF8A65 45%, #FF375F 100%);
+
       --font-hero: clamp(44px, 8vw, 96px);
       --font-section: clamp(32px, 5vw, 64px);
       --font-card: clamp(20px, 3vw, 36px);
@@ -58,6 +62,128 @@
         opacity: 1 !important;
         transform: none !important;
       }
+    }
+
+    /* ============================================
+       GRADIENT TEXT UTILITIES
+       ============================================ */
+    .gradient-text {
+      background-size: 200% auto;
+      background-position: 0% center;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradientDrift 10s ease-in-out infinite;
+    }
+
+    @keyframes gradientDrift {
+      0%, 100% { background-position: 0% center; }
+      50% { background-position: 100% center; }
+    }
+
+    .gradient-aurora { background-image: var(--gradient-aurora); }
+    .gradient-cool { background-image: var(--gradient-cool); }
+    .gradient-warm { background-image: var(--gradient-warm); }
+
+    /* ============================================
+       AMBIENT ATMOSPHERE (cursor glow + drifting aurora)
+       ============================================ */
+    .ambient-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      overflow: hidden;
+      mix-blend-mode: screen;
+    }
+
+    .aurora-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.35;
+      will-change: transform;
+    }
+
+    .aurora-blob.b1 {
+      width: 42vw;
+      height: 42vw;
+      top: -10%;
+      left: -8%;
+      background: radial-gradient(circle, rgba(41,151,255,0.6) 0%, transparent 70%);
+      animation: driftOne 26s ease-in-out infinite;
+    }
+
+    .aurora-blob.b2 {
+      width: 36vw;
+      height: 36vw;
+      top: 40%;
+      right: -10%;
+      background: radial-gradient(circle, rgba(191,90,242,0.5) 0%, transparent 70%);
+      animation: driftTwo 32s ease-in-out infinite;
+    }
+
+    .aurora-blob.b3 {
+      width: 30vw;
+      height: 30vw;
+      bottom: -8%;
+      left: 20%;
+      background: radial-gradient(circle, rgba(255,138,101,0.4) 0%, transparent 70%);
+      animation: driftThree 22s ease-in-out infinite;
+    }
+
+    @keyframes driftOne {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(8vw, 12vh) scale(1.15); }
+    }
+
+    @keyframes driftTwo {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-10vw, -6vh) scale(1.1); }
+    }
+
+    @keyframes driftThree {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(6vw, -10vh) scale(1.2); }
+    }
+
+    .cursor-glow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 500px;
+      height: 500px;
+      margin-left: -250px;
+      margin-top: -250px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(41,151,255,0.16) 0%, rgba(191,90,242,0.08) 45%, transparent 70%);
+      pointer-events: none;
+      z-index: 3;
+      mix-blend-mode: screen;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      will-change: transform;
+    }
+
+    .cursor-glow.active { opacity: 1; }
+
+    .grain-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 4;
+      pointer-events: none;
+      opacity: 0.035;
+      mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .aurora-blob { animation: none !important; }
+      .cursor-glow { display: none !important; }
+    }
+
+    @media (max-width: 768px) {
+      .cursor-glow { display: none; }
     }
 
     /* ============================================
@@ -207,7 +333,7 @@
       position: absolute;
       text-align: center;
       z-index: 10;
-      transition: opacity 0.1s linear, transform 0.1s linear;
+      will-change: opacity, transform;
     }
 
     .hero-headline h1 {
@@ -215,10 +341,6 @@
       font-weight: 800;
       letter-spacing: -0.03em;
       line-height: 1.05;
-      background: linear-gradient(180deg, var(--liquid-platinum) 0%, var(--titanium) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
     }
 
     .hero-headline .sub {
@@ -238,7 +360,7 @@
       aspect-ratio: 16/10;
       perspective: 2000px;
       transform: scale(0.6);
-      transition: transform 0.1s linear;
+      will-change: transform;
     }
 
     .laptop {
@@ -246,7 +368,7 @@
       height: 100%;
       position: relative;
       transform-style: preserve-3d;
-      transition: transform 0.1s linear;
+      will-change: transform;
     }
 
     .laptop-base {
@@ -282,7 +404,7 @@
       border-radius: 16px 16px 0 0;
       transform-origin: bottom center;
       transform: rotateX(-110deg);
-      transition: transform 0.1s linear;
+      will-change: transform;
       overflow: hidden;
       box-shadow: 0 0 0 1px rgba(255,255,255,0.06);
     }
@@ -333,9 +455,8 @@
       font-size: clamp(24px, 4vw, 48px);
       font-weight: 700;
       letter-spacing: -0.02em;
-      color: var(--liquid-platinum);
       z-index: 2;
-      text-shadow: 0 0 40px rgba(41,151,255,0.5);
+      filter: drop-shadow(0 0 40px rgba(41,151,255,0.5));
     }
 
     .keyboard-glow {
@@ -346,8 +467,7 @@
       height: 30%;
       background: radial-gradient(ellipse at center, rgba(41,151,255,0.08) 0%, transparent 70%);
       pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.3s ease;
+      will-change: opacity;
     }
 
     .hero-info {
@@ -359,7 +479,7 @@
       justify-content: space-between;
       padding: 0 48px;
       opacity: 0;
-      transition: opacity 0.1s linear;
+      will-change: opacity;
     }
 
     .hero-info p {
@@ -481,10 +601,7 @@
       font-weight: 800;
       letter-spacing: -0.02em;
       margin-bottom: 16px;
-      background: linear-gradient(135deg, var(--liquid-platinum), var(--titanium));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      transition: opacity 0.25s ease, transform 0.25s ease, filter 0.25s ease;
     }
 
     .bar-chart {
@@ -547,6 +664,7 @@
       gap: 20px;
       max-width: 1200px;
       margin: 0 auto;
+      perspective: 1400px;
     }
 
     .bento-card {
@@ -556,7 +674,9 @@
       padding: 40px;
       position: relative;
       overflow: hidden;
-      transition: all 0.4s var(--transition-smooth);
+      transition: border-color 0.4s var(--transition-smooth), background 0.4s var(--transition-smooth), transform 0.15s linear;
+      transform-style: preserve-3d;
+      will-change: transform;
       cursor: pointer;
     }
 
@@ -923,13 +1043,15 @@
        ============================================ */
     .scroll-animated {
       opacity: 0;
-      transform: translateY(40px);
-      transition: opacity 0.8s var(--transition-smooth), transform 0.8s var(--transition-smooth);
+      transform: translateY(48px) scale(0.97);
+      filter: blur(8px);
+      transition: opacity 1s var(--transition-smooth), transform 1s var(--transition-smooth), filter 1s var(--transition-smooth);
     }
 
     .scroll-animated.visible {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateY(0) scale(1);
+      filter: blur(0);
     }
 
     .scroll-animated.delay-1 { transition-delay: 0.1s; }
@@ -996,6 +1118,15 @@
 </head>
 <body>
 
+  <!-- Ambient Atmosphere -->
+  <div class="ambient-layer" aria-hidden="true">
+    <div class="aurora-blob b1"></div>
+    <div class="aurora-blob b2"></div>
+    <div class="aurora-blob b3"></div>
+  </div>
+  <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+  <div class="grain-layer" aria-hidden="true"></div>
+
   <!-- Global Navigation -->
   <nav class="global-nav">
     <ul>
@@ -1025,7 +1156,7 @@
   <section class="hero" id="overview">
     <div class="hero-sticky">
       <div class="hero-headline" id="heroHeadline">
-        <h1>Mind-blowing.<br>Head-turning.</h1>
+        <h1 class="gradient-text gradient-aurora">Mind-blowing.<br>Head-turning.</h1>
         <p class="sub">The most advanced Mac laptops ever.</p>
       </div>
       
@@ -1035,7 +1166,7 @@
             <div class="laptop-screen">
               <div class="screen-content">
                 <div class="screen-glow"></div>
-                <div class="screen-text">macOS</div>
+                <div class="screen-text gradient-text gradient-aurora">macOS</div>
               </div>
             </div>
           </div>
@@ -1055,7 +1186,7 @@
   <section class="performance" id="performance">
     <div class="performance-header scroll-animated">
       <p class="section-label">Performance</p>
-      <h2 class="section-title">Scary fast.</h2>
+      <h2 class="section-title gradient-text gradient-cool">Scary fast.</h2>
       <p class="section-body" style="margin: 0 auto;">
         M4 Pro and M4 Max chips feature the world's fastest CPU cores and a massively more powerful GPU. Fly through the most demanding workflows.
       </p>
@@ -1069,7 +1200,7 @@
     <div class="performance-grid" id="perfGrid">
       <div class="perf-card scroll-animated delay-1">
         <h3>CPU Performance</h3>
-        <div class="perf-value" id="cpuValue">Up to 14 cores</div>
+        <div class="perf-value gradient-text gradient-cool" id="cpuValue">Up to 14 cores</div>
         <div class="bar-chart">
           <div class="bar-fill pro" id="cpuBar" style="width: 0%"></div>
         </div>
@@ -1078,7 +1209,7 @@
 
       <div class="perf-card scroll-animated delay-2">
         <h3>GPU Performance</h3>
-        <div class="perf-value" id="gpuValue">Up to 20 cores</div>
+        <div class="perf-value gradient-text gradient-cool" id="gpuValue">Up to 20 cores</div>
         <div class="bar-chart">
           <div class="bar-fill pro" id="gpuBar" style="width: 0%"></div>
         </div>
@@ -1087,7 +1218,7 @@
 
       <div class="perf-card scroll-animated delay-3">
         <h3>Neural Engine</h3>
-        <div class="perf-value" id="neuralValue">16-core</div>
+        <div class="perf-value gradient-text gradient-cool" id="neuralValue">16-core</div>
         <div class="bar-chart">
           <div class="bar-fill pro" id="neuralBar" style="width: 0%"></div>
         </div>
@@ -1096,7 +1227,7 @@
 
       <div class="perf-card scroll-animated delay-1">
         <h3>Memory Bandwidth</h3>
-        <div class="perf-value" id="memValue">273 GB/s</div>
+        <div class="perf-value gradient-text gradient-cool" id="memValue">273 GB/s</div>
         <div class="bar-chart">
           <div class="bar-fill pro" id="memBar" style="width: 0%"></div>
         </div>
@@ -1105,7 +1236,7 @@
 
       <div class="perf-card scroll-animated delay-2">
         <h3>Media Engine</h3>
-        <div class="perf-value" id="mediaValue">ProRes / H.264</div>
+        <div class="perf-value gradient-text gradient-cool" id="mediaValue">ProRes / H.264</div>
         <div class="bar-chart">
           <div class="bar-fill pro" id="mediaBar" style="width: 0%"></div>
         </div>
@@ -1114,7 +1245,7 @@
 
       <div class="perf-card scroll-animated delay-3">
         <h3>Battery Life</h3>
-        <div class="perf-value" id="batValue">22 hours</div>
+        <div class="perf-value gradient-text gradient-cool" id="batValue">22 hours</div>
         <div class="bar-chart">
           <div class="bar-fill pro" id="batBar" style="width: 0%"></div>
         </div>
@@ -1127,7 +1258,7 @@
   <section class="bento" id="features">
     <div class="bento-header scroll-animated">
       <p class="section-label">Features</p>
-      <h2 class="section-title">Every detail.<br>Considered.</h2>
+      <h2 class="section-title gradient-text gradient-warm">Every detail.<br>Considered.</h2>
     </div>
 
     <div class="bento-grid">
@@ -1176,7 +1307,7 @@
     <div class="camera-bg"></div>
     <div class="camera-content scroll-animated">
       <div class="camera-lens"></div>
-      <h2>Look sharp.<br>Sound great.</h2>
+      <h2 class="gradient-text gradient-aurora">Look sharp.<br>Sound great.</h2>
       <p>12MP Center Stage camera with advanced image signal processor. Studio-quality three-mic array. Six-speaker sound system with force-canceling woofers.</p>
     </div>
   </section>
@@ -1185,7 +1316,7 @@
   <section class="specs" id="specs">
     <div class="specs-header scroll-animated">
       <p class="section-label">Configure</p>
-      <h2 class="section-title">Choose your MacBook Pro.</h2>
+      <h2 class="section-title gradient-text gradient-warm">Choose your MacBook Pro.</h2>
     </div>
 
     <div class="specs-grid">
@@ -1305,40 +1436,76 @@
     const subNav = document.getElementById('subNav');
     const heroHeadline = document.getElementById('heroHeadline');
     const laptopContainer = document.getElementById('laptopContainer');
+    const laptop = document.getElementById('laptop');
     const laptopLid = document.getElementById('laptopLid');
     const keyboardGlow = document.getElementById('keyboardGlow');
     const heroInfo = document.getElementById('heroInfo');
 
-    // Hero scroll scrubbing
+    const lerp = (a, b, t) => a + (b - a) * t;
+
+    // Target values driven by scroll position; current values are eased
+    // toward those targets every frame so the whole hero feels fluid
+    // instead of snapping directly to the scroll position.
+    const heroTarget = {
+      headlineOpacity: 1, headlineScale: 1, headlineY: 0,
+      laptopScale: 0.6, lidAngle: -110, glowOpacity: 0, infoOpacity: 0
+    };
+    const heroCurrent = { ...heroTarget, tiltX: 0, tiltY: 0 };
+    const mouseTilt = { x: 0, y: 0 };
+
+    // Hero scroll scrubbing: compute targets only
     function updateHeroScroll() {
       const hero = document.querySelector('.hero');
       const rect = hero.getBoundingClientRect();
       const heroHeight = hero.offsetHeight;
       const scrollProgress = Math.max(0, Math.min(1, -rect.top / (heroHeight - window.innerHeight)));
-      
-      // Headline fade out (0% - 20%)
-      const headlineOpacity = Math.max(0, 1 - scrollProgress * 5);
-      const headlineScale = 1 + scrollProgress * 0.2;
-      const headlineY = -scrollProgress * 100;
-      heroHeadline.style.opacity = headlineOpacity;
-      heroHeadline.style.transform = `scale(${headlineScale}) translateY(${headlineY}px)`;
-      
-      // Laptop scale (0% - 30%)
-      const laptopScale = 0.6 + scrollProgress * 0.8;
-      laptopContainer.style.transform = `scale(${Math.min(1, laptopScale)})`;
-      
-      // Laptop lid open (10% - 40%)
+
+      heroTarget.headlineOpacity = Math.max(0, 1 - scrollProgress * 5);
+      heroTarget.headlineScale = 1 + scrollProgress * 0.2;
+      heroTarget.headlineY = -scrollProgress * 100;
+
+      heroTarget.laptopScale = Math.min(1, 0.6 + scrollProgress * 0.8);
+
       const lidProgress = Math.max(0, Math.min(1, (scrollProgress - 0.1) * 3.33));
-      const lidAngle = -110 + (lidProgress * 110);
-      laptopLid.style.transform = `rotateX(${lidAngle}deg)`;
-      
-      // Keyboard glow (15% - 35%)
-      const glowOpacity = Math.max(0, Math.min(1, (scrollProgress - 0.15) * 5));
-      keyboardGlow.style.opacity = glowOpacity;
-      
-      // Hero info (25% - 50%)
-      const infoOpacity = Math.max(0, Math.min(1, (scrollProgress - 0.25) * 4));
-      heroInfo.style.opacity = infoOpacity;
+      heroTarget.lidAngle = -110 + (lidProgress * 110);
+
+      heroTarget.glowOpacity = Math.max(0, Math.min(1, (scrollProgress - 0.15) * 5));
+      heroTarget.infoOpacity = Math.max(0, Math.min(1, (scrollProgress - 0.25) * 4));
+    }
+
+    // Mouse-driven parallax tilt on the laptop itself, only near the top of the page
+    window.addEventListener('mousemove', (e) => {
+      if (window.scrollY > window.innerHeight * 1.1) { mouseTilt.x = 0; mouseTilt.y = 0; return; }
+      const nx = (e.clientX / window.innerWidth) - 0.5;
+      const ny = (e.clientY / window.innerHeight) - 0.5;
+      mouseTilt.x = ny * -8;
+      mouseTilt.y = nx * 10;
+    });
+    window.addEventListener('mouseleave', () => { mouseTilt.x = 0; mouseTilt.y = 0; });
+
+    // Single render loop: eases every hero value toward its target and
+    // writes styles once per frame for smooth, decoupled motion.
+    function renderHeroFrame() {
+      const ease = 0.14;
+      heroCurrent.headlineOpacity = lerp(heroCurrent.headlineOpacity, heroTarget.headlineOpacity, ease);
+      heroCurrent.headlineScale = lerp(heroCurrent.headlineScale, heroTarget.headlineScale, ease);
+      heroCurrent.headlineY = lerp(heroCurrent.headlineY, heroTarget.headlineY, ease);
+      heroCurrent.laptopScale = lerp(heroCurrent.laptopScale, heroTarget.laptopScale, ease);
+      heroCurrent.lidAngle = lerp(heroCurrent.lidAngle, heroTarget.lidAngle, ease);
+      heroCurrent.glowOpacity = lerp(heroCurrent.glowOpacity, heroTarget.glowOpacity, ease);
+      heroCurrent.infoOpacity = lerp(heroCurrent.infoOpacity, heroTarget.infoOpacity, ease);
+      heroCurrent.tiltX = lerp(heroCurrent.tiltX, mouseTilt.x, 0.06);
+      heroCurrent.tiltY = lerp(heroCurrent.tiltY, mouseTilt.y, 0.06);
+
+      heroHeadline.style.opacity = heroCurrent.headlineOpacity;
+      heroHeadline.style.transform = `scale(${heroCurrent.headlineScale}) translateY(${heroCurrent.headlineY}px)`;
+      laptopContainer.style.transform = `scale(${heroCurrent.laptopScale})`;
+      laptop.style.transform = `rotateX(${heroCurrent.tiltX}deg) rotateY(${heroCurrent.tiltY}deg)`;
+      laptopLid.style.transform = `rotateX(${heroCurrent.lidAngle}deg)`;
+      keyboardGlow.style.opacity = heroCurrent.glowOpacity;
+      heroInfo.style.opacity = heroCurrent.infoOpacity;
+
+      requestAnimationFrame(renderHeroFrame);
     }
 
     // Sub-nav visibility
@@ -1366,6 +1533,36 @@
     // Initial call
     updateHeroScroll();
     updateSubNav();
+    requestAnimationFrame(renderHeroFrame);
+
+    // ============================================
+    // AMBIENT CURSOR GLOW
+    // ============================================
+    const cursorGlow = document.getElementById('cursorGlow');
+    const glowPos = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+    const glowCurrent = { ...glowPos };
+    let glowActive = false;
+
+    window.addEventListener('mousemove', (e) => {
+      glowPos.x = e.clientX;
+      glowPos.y = e.clientY;
+      if (!glowActive) {
+        glowActive = true;
+        cursorGlow.classList.add('active');
+      }
+    });
+    window.addEventListener('mouseleave', () => {
+      glowActive = false;
+      cursorGlow.classList.remove('active');
+    });
+
+    function renderCursorGlow() {
+      glowCurrent.x = lerp(glowCurrent.x, glowPos.x, 0.12);
+      glowCurrent.y = lerp(glowCurrent.y, glowPos.y, 0.12);
+      cursorGlow.style.transform = `translate(${glowCurrent.x}px, ${glowCurrent.y}px)`;
+      requestAnimationFrame(renderCursorGlow);
+    }
+    requestAnimationFrame(renderCursorGlow);
 
     // ============================================
     // INTERSECTION OBSERVER (Scroll Animations)
@@ -1422,19 +1619,26 @@
     function updateBars(chip) {
       const data = chipData[chip];
       const suffix = chip === 'pro' ? 'pro' : 'max';
-      
+      const gradientClass = chip === 'pro' ? 'gradient-cool' : 'gradient-warm';
+
       Object.keys(data).forEach(key => {
         const valueEl = document.getElementById(`${key}Value`);
         const barEl = document.getElementById(`${key}Bar`);
         const multEl = document.getElementById(`${key}Mult`);
-        
-        // Animate value text
+
+        // Animate value text with a soft blur + rise transition
         valueEl.style.opacity = '0';
+        valueEl.style.filter = 'blur(6px)';
+        valueEl.style.transform = 'translateY(6px)';
         setTimeout(() => {
           valueEl.textContent = data[key].value;
+          valueEl.classList.remove('gradient-cool', 'gradient-warm');
+          valueEl.classList.add(gradientClass);
           valueEl.style.opacity = '1';
+          valueEl.style.filter = 'blur(0)';
+          valueEl.style.transform = 'translateY(0)';
         }, 150);
-        
+
         // Animate bar
         barEl.style.width = '0%';
         barEl.className = `bar-fill ${suffix}`;
@@ -1475,6 +1679,39 @@
         const y = e.clientY - rect.top;
         card.style.setProperty('--mouse-x', `${x}px`);
         card.style.setProperty('--mouse-y', `${y}px`);
+
+        const rotateY = ((x / rect.width) - 0.5) * 10;
+        const rotateX = ((y / rect.height) - 0.5) * -10;
+        card.style.transform = `translateY(-4px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'translateY(0) rotateX(0deg) rotateY(0deg)';
+      });
+    });
+
+    // ============================================
+    // MAGNETIC BUTTONS
+    // ============================================
+    document.querySelectorAll('.btn-buy').forEach(btn => {
+      let pressed = false;
+      const applyTransform = (x, y) => {
+        btn.style.transform = `translate(${x}px, ${y}px) scale(${pressed ? 0.96 : 1})`;
+      };
+      let lastX = 0, lastY = 0;
+
+      btn.addEventListener('mousemove', (e) => {
+        const rect = btn.getBoundingClientRect();
+        lastX = (e.clientX - rect.left - rect.width / 2) * 0.25;
+        lastY = (e.clientY - rect.top - rect.height / 2) * 0.35;
+        applyTransform(lastX, lastY);
+      });
+      btn.addEventListener('mousedown', () => { pressed = true; applyTransform(lastX, lastY); });
+      btn.addEventListener('mouseup', () => { pressed = false; applyTransform(lastX, lastY); });
+      btn.addEventListener('mouseleave', () => {
+        pressed = false;
+        lastX = 0; lastY = 0;
+        btn.style.transform = 'translate(0, 0) scale(1)';
       });
     });
 
