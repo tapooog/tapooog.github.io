@@ -1,1 +1,1512 @@
-# tapooog.github.io
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MacBook Pro - Apple</title>
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES & RESET
+       ============================================ */
+    :root {
+      --deep-void: #000000;
+      --obsidian: #0B0B0C;
+      --space-grey: #1D1D1F;
+      --liquid-platinum: #F5F5F7;
+      --titanium: #86868B;
+      --display-blue: #2997FF;
+      --peak-amber: #F4A261;
+      
+      --font-hero: clamp(44px, 8vw, 96px);
+      --font-section: clamp(32px, 5vw, 64px);
+      --font-card: clamp(20px, 3vw, 36px);
+      --font-body: 17px;
+      --font-caption: 12px;
+      
+      --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Segoe UI", Roboto, sans-serif;
+      background: var(--deep-void);
+      color: var(--liquid-platinum);
+      overflow-x: hidden;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Reduced motion support */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+      .scroll-animated {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
+
+    /* ============================================
+       GLOBAL NAVIGATION
+       ============================================ */
+    .global-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 48px;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .global-nav ul {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .global-nav a {
+      color: var(--titanium);
+      text-decoration: none;
+      font-size: var(--font-caption);
+      letter-spacing: -0.01em;
+      transition: color 0.3s var(--transition-smooth);
+    }
+
+    .global-nav a:hover {
+      color: var(--liquid-platinum);
+    }
+
+    /* ============================================
+       STICKY SUB-NAVIGATION
+       ============================================ */
+    .sub-nav {
+      position: fixed;
+      top: 48px;
+      left: 0;
+      right: 0;
+      height: 52px;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      transform: translateY(-100%);
+      transition: transform 0.4s var(--transition-smooth);
+    }
+
+    .sub-nav.visible {
+      transform: translateY(0);
+    }
+
+    .sub-nav-brand {
+      font-size: 21px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .sub-nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .sub-nav-links a {
+      color: var(--titanium);
+      text-decoration: none;
+      font-size: var(--font-caption);
+      transition: color 0.3s var(--transition-smooth);
+    }
+
+    .sub-nav-links a:hover {
+      color: var(--liquid-platinum);
+    }
+
+    .btn-buy {
+      background: var(--display-blue);
+      color: white;
+      border: none;
+      padding: 4px 16px;
+      border-radius: 980px;
+      font-size: var(--font-caption);
+      font-weight: 500;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s var(--transition-spring), box-shadow 0.3s ease;
+    }
+
+    .btn-buy::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .btn-buy:hover::before {
+      left: 100%;
+    }
+
+    .btn-buy:hover {
+      box-shadow: 0 0 20px rgba(41, 151, 255, 0.4);
+    }
+
+    .btn-buy:active {
+      transform: scale(0.96);
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      position: relative;
+      min-height: 300vh;
+      background: var(--deep-void);
+    }
+
+    .hero-sticky {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .hero-headline {
+      position: absolute;
+      text-align: center;
+      z-index: 10;
+      transition: opacity 0.1s linear, transform 0.1s linear;
+    }
+
+    .hero-headline h1 {
+      font-size: var(--font-hero);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      background: linear-gradient(180deg, var(--liquid-platinum) 0%, var(--titanium) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-headline .sub {
+      font-size: 21px;
+      color: var(--titanium);
+      margin-top: 16px;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      opacity: 0.9;
+    }
+
+    /* 3D Laptop */
+    .laptop-container {
+      position: relative;
+      width: 80vw;
+      max-width: 1000px;
+      aspect-ratio: 16/10;
+      perspective: 2000px;
+      transform: scale(0.6);
+      transition: transform 0.1s linear;
+    }
+
+    .laptop {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.1s linear;
+    }
+
+    .laptop-base {
+      position: absolute;
+      bottom: 0;
+      left: 5%;
+      width: 90%;
+      height: 8%;
+      background: linear-gradient(180deg, #2a2a2c 0%, #1a1a1c 100%);
+      border-radius: 0 0 20px 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.05);
+    }
+
+    .laptop-base::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 15%;
+      height: 3px;
+      background: #000;
+      border-radius: 0 0 4px 4px;
+    }
+
+    .laptop-lid {
+      position: absolute;
+      bottom: 8%;
+      left: 5%;
+      width: 90%;
+      height: 92%;
+      background: #0d0d0f;
+      border-radius: 16px 16px 0 0;
+      transform-origin: bottom center;
+      transform: rotateX(-110deg);
+      transition: transform 0.1s linear;
+      overflow: hidden;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.06);
+    }
+
+    .laptop-screen {
+      position: absolute;
+      top: 3%;
+      left: 3%;
+      right: 3%;
+      bottom: 3%;
+      background: #000;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .screen-content {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 25%, #0f3460 50%, #1a1a2e 75%, #0d0d1a 100%);
+      background-size: 400% 400%;
+      animation: screenShift 8s ease infinite;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    @keyframes screenShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .screen-glow {
+      position: absolute;
+      width: 60%;
+      height: 60%;
+      background: radial-gradient(circle, rgba(41,151,255,0.3) 0%, transparent 70%);
+      filter: blur(40px);
+      animation: glowPulse 4s ease-in-out infinite;
+    }
+
+    @keyframes glowPulse {
+      0%, 100% { opacity: 0.6; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+
+    .screen-text {
+      font-size: clamp(24px, 4vw, 48px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--liquid-platinum);
+      z-index: 2;
+      text-shadow: 0 0 40px rgba(41,151,255,0.5);
+    }
+
+    .keyboard-glow {
+      position: absolute;
+      bottom: 8%;
+      left: 10%;
+      right: 10%;
+      height: 30%;
+      background: radial-gradient(ellipse at center, rgba(41,151,255,0.08) 0%, transparent 70%);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .hero-info {
+      position: absolute;
+      bottom: 60px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 48px;
+      opacity: 0;
+      transition: opacity 0.1s linear;
+    }
+
+    .hero-info p {
+      font-size: var(--font-caption);
+      color: var(--titanium);
+      max-width: 300px;
+      line-height: 1.6;
+    }
+
+    /* ============================================
+       SECTIONS COMMON
+       ============================================ */
+    section {
+      position: relative;
+      padding: 120px 48px;
+    }
+
+    .section-label {
+      font-size: var(--font-caption);
+      color: var(--display-blue);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+      font-weight: 600;
+    }
+
+    .section-title {
+      font-size: var(--font-section);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 24px;
+    }
+
+    .section-body {
+      font-size: var(--font-body);
+      color: var(--titanium);
+      max-width: 600px;
+      line-height: 1.6;
+    }
+
+    /* ============================================
+       PERFORMANCE SECTION
+       ============================================ */
+    .performance {
+      background: var(--obsidian);
+      padding: 160px 48px;
+    }
+
+    .performance-header {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+
+    .chip-selector {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 60px;
+    }
+
+    .chip-tab {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--titanium);
+      padding: 12px 32px;
+      border-radius: 980px;
+      font-size: 17px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s var(--transition-spring);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .chip-tab.active {
+      background: var(--space-grey);
+      color: var(--liquid-platinum);
+      border-color: rgba(255,255,255,0.2);
+      box-shadow: 0 0 30px rgba(41,151,255,0.15);
+    }
+
+    .chip-tab:hover:not(.active) {
+      border-color: rgba(255,255,255,0.25);
+      color: var(--liquid-platinum);
+    }
+
+    .performance-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .perf-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 20px;
+      padding: 40px;
+      transition: all 0.4s var(--transition-smooth);
+    }
+
+    .perf-card:hover {
+      background: rgba(255,255,255,0.05);
+      border-color: rgba(255,255,255,0.1);
+      transform: translateY(-4px);
+    }
+
+    .perf-card h3 {
+      font-size: 15px;
+      color: var(--titanium);
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+
+    .perf-value {
+      font-size: 48px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, var(--liquid-platinum), var(--titanium));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .bar-chart {
+      width: 100%;
+      height: 8px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      width: 0%;
+      transition: width 1.2s var(--transition-spring);
+      position: relative;
+    }
+
+    .bar-fill::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: -4px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: inherit;
+      filter: blur(8px);
+      opacity: 0.8;
+    }
+
+    .bar-fill.pro { background: linear-gradient(90deg, var(--display-blue), #5ac8fa); }
+    .bar-fill.max { background: linear-gradient(90deg, var(--peak-amber), #e9c46a); }
+
+    .perf-multiplier {
+      font-size: var(--font-caption);
+      color: var(--display-blue);
+      margin-top: 12px;
+      font-weight: 600;
+    }
+
+    /* ============================================
+       BENTO GRID
+       ============================================ */
+    .bento {
+      background: var(--deep-void);
+      padding: 160px 48px;
+    }
+
+    .bento-header {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, 400px);
+      gap: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .bento-card {
+      background: var(--obsidian);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 24px;
+      padding: 40px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s var(--transition-smooth);
+      cursor: pointer;
+    }
+
+    .bento-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 24px;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      pointer-events: none;
+      background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255,255,255,0.06), transparent 40%);
+    }
+
+    .bento-card:hover::before {
+      opacity: 1;
+    }
+
+    .bento-card:hover {
+      border-color: rgba(255,255,255,0.12);
+      transform: translateY(-2px);
+    }
+
+    .bento-card.wide {
+      grid-column: span 2;
+    }
+
+    .bento-card.tall {
+      grid-row: span 2;
+    }
+
+    .bento-card h3 {
+      font-size: var(--font-card);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .bento-card p {
+      font-size: var(--font-body);
+      color: var(--titanium);
+      line-height: 1.5;
+      position: relative;
+      z-index: 2;
+      max-width: 80%;
+    }
+
+    .bento-visual {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 60%;
+      height: 60%;
+      opacity: 0.6;
+      transition: all 0.6s var(--transition-smooth);
+    }
+
+    .bento-card:hover .bento-visual {
+      opacity: 0.9;
+      transform: scale(1.05);
+    }
+
+    /* Display card visual */
+    .display-visual {
+      background: radial-gradient(circle at 30% 50%, rgba(41,151,255,0.15) 0%, transparent 60%),
+                  repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(41,151,255,0.03) 20px);
+    }
+
+    /* Thermal visual */
+    .thermal-visual {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .fan-icon {
+      width: 120px;
+      height: 120px;
+      border: 2px solid rgba(255,255,255,0.1);
+      border-radius: 50%;
+      position: relative;
+      animation: fanSpin 8s linear infinite;
+    }
+
+    .fan-icon::before,
+    .fan-icon::after {
+      content: '';
+      position: absolute;
+      border: 2px solid rgba(255,255,255,0.08);
+      border-radius: 50%;
+    }
+
+    .fan-icon::before {
+      inset: 20px;
+    }
+
+    .fan-icon::after {
+      inset: 40px;
+      border-color: rgba(41,151,255,0.2);
+    }
+
+    @keyframes fanSpin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Mic visual */
+    .mic-visual {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 4px;
+      padding-bottom: 40px;
+    }
+
+    .wave-bar {
+      width: 4px;
+      background: linear-gradient(to top, var(--display-blue), transparent);
+      border-radius: 2px;
+      animation: wave 1.2s ease-in-out infinite;
+    }
+
+    .wave-bar:nth-child(1) { height: 30%; animation-delay: 0s; }
+    .wave-bar:nth-child(2) { height: 60%; animation-delay: 0.1s; }
+    .wave-bar:nth-child(3) { height: 45%; animation-delay: 0.2s; }
+    .wave-bar:nth-child(4) { height: 80%; animation-delay: 0.3s; }
+    .wave-bar:nth-child(5) { height: 55%; animation-delay: 0.15s; }
+    .wave-bar:nth-child(6) { height: 70%; animation-delay: 0.25s; }
+    .wave-bar:nth-child(7) { height: 40%; animation-delay: 0.05s; }
+
+    @keyframes wave {
+      0%, 100% { transform: scaleY(0.6); opacity: 0.5; }
+      50% { transform: scaleY(1); opacity: 1; }
+    }
+
+    /* Ports visual */
+    .ports-visual {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .port {
+      width: 40px;
+      height: 12px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 6px;
+      position: relative;
+      box-shadow: 0 0 10px rgba(41,151,255,0.2);
+    }
+
+    .port::after {
+      content: '';
+      position: absolute;
+      inset: 2px;
+      background: rgba(41,151,255,0.3);
+      border-radius: 4px;
+    }
+
+    /* ============================================
+       CAMERA / AUDIO SECTION
+       ============================================ */
+    .camera-section {
+      background: var(--obsidian);
+      padding: 0;
+      height: 100vh;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .camera-bg {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, #1a1a2e 0%, var(--deep-void) 70%);
+    }
+
+    .camera-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      max-width: 800px;
+      padding: 0 48px;
+    }
+
+    .camera-content h2 {
+      font-size: var(--font-section);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 24px;
+      line-height: 1.1;
+    }
+
+    .camera-content p {
+      font-size: 21px;
+      color: var(--titanium);
+      line-height: 1.5;
+    }
+
+    .camera-lens {
+      width: 200px;
+      height: 200px;
+      margin: 0 auto 60px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #2a2a3e 0%, #0d0d1a 50%, #000 100%);
+      box-shadow: 0 0 60px rgba(41,151,255,0.15), inset 0 0 40px rgba(0,0,0,0.8);
+      position: relative;
+      transition: transform 0.6s var(--transition-spring);
+    }
+
+    .camera-lens::before {
+      content: '';
+      position: absolute;
+      inset: 20%;
+      border-radius: 50%;
+      background: radial-gradient(circle at 40% 40%, rgba(41,151,255,0.2) 0%, transparent 60%);
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .camera-lens::after {
+      content: '';
+      position: absolute;
+      inset: 35%;
+      border-radius: 50%;
+      background: radial-gradient(circle, #1a1a3e 0%, #000 100%);
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.9);
+    }
+
+    /* ============================================
+       SPECS SECTION
+       ============================================ */
+    .specs {
+      background: var(--deep-void);
+      padding: 160px 48px;
+    }
+
+    .specs-header {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .spec-card {
+      background: var(--obsidian);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 20px;
+      padding: 40px 32px;
+      text-align: center;
+      transition: all 0.4s var(--transition-smooth);
+      position: sticky;
+      top: 120px;
+    }
+
+    .spec-card:hover {
+      border-color: rgba(255,255,255,0.12);
+      transform: translateY(-4px);
+    }
+
+    .spec-card .model-name {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+
+    .spec-card .model-price {
+      font-size: 17px;
+      color: var(--titanium);
+      margin-bottom: 32px;
+    }
+
+    .spec-card .model-img {
+      width: 100%;
+      height: 160px;
+      background: linear-gradient(180deg, rgba(41,151,255,0.05) 0%, transparent 100%);
+      border-radius: 12px;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 64px;
+    }
+
+    .spec-row {
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .spec-row:last-child {
+      border-bottom: none;
+    }
+
+    .spec-label {
+      font-size: var(--font-caption);
+      color: var(--titanium);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+
+    .spec-value {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--liquid-platinum);
+    }
+
+    .spec-cta {
+      margin-top: 32px;
+      width: 100%;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    footer {
+      background: var(--obsidian);
+      padding: 40px 48px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-content p {
+      font-size: var(--font-caption);
+      color: var(--titanium);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-links a {
+      font-size: var(--font-caption);
+      color: var(--titanium);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--liquid-platinum);
+    }
+
+    /* ============================================
+       SCROLL ANIMATIONS
+       ============================================ */
+    .scroll-animated {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s var(--transition-smooth), transform 0.8s var(--transition-smooth);
+    }
+
+    .scroll-animated.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .scroll-animated.delay-1 { transition-delay: 0.1s; }
+    .scroll-animated.delay-2 { transition-delay: 0.2s; }
+    .scroll-animated.delay-3 { transition-delay: 0.3s; }
+
+    /* ============================================
+       RESPONSIVE
+       ============================================ */
+    @media (max-width: 1024px) {
+      .bento-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: auto;
+      }
+      .bento-card.wide {
+        grid-column: span 2;
+      }
+      .bento-card.tall {
+        grid-row: span 1;
+      }
+      .specs-grid {
+        grid-template-columns: 1fr;
+      }
+      .spec-card {
+        position: relative;
+        top: 0;
+      }
+    }
+
+    @media (max-width: 768px) {
+      section {
+        padding: 80px 24px;
+      }
+      .sub-nav {
+        padding: 0 24px;
+      }
+      .hero-info {
+        padding: 0 24px;
+        flex-direction: column;
+        gap: 16px;
+        bottom: 40px;
+      }
+      .bento-grid {
+        grid-template-columns: 1fr;
+      }
+      .bento-card.wide {
+        grid-column: span 1;
+      }
+      .performance-grid {
+        grid-template-columns: 1fr;
+      }
+      .camera-lens {
+        width: 140px;
+        height: 140px;
+      }
+      .footer-content {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+      }
+    }
+  </style>
+<base target="_blank">
+</head>
+<body>
+
+  <!-- Global Navigation -->
+  <nav class="global-nav">
+    <ul>
+      <li><a href="#">Store</a></li>
+      <li><a href="#">Mac</a></li>
+      <li><a href="#">iPad</a></li>
+      <li><a href="#">iPhone</a></li>
+      <li><a href="#">Watch</a></li>
+      <li><a href="#">AirPods</a></li>
+      <li><a href="#">Support</a></li>
+    </ul>
+  </nav>
+
+  <!-- Sticky Sub-Navigation -->
+  <nav class="sub-nav" id="subNav">
+    <div class="sub-nav-brand">MacBook Pro</div>
+    <div class="sub-nav-links">
+      <a href="#overview">Overview</a>
+      <a href="#performance">Performance</a>
+      <a href="#features">Features</a>
+      <a href="#specs">Specs</a>
+      <button class="btn-buy">Buy</button>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="overview">
+    <div class="hero-sticky">
+      <div class="hero-headline" id="heroHeadline">
+        <h1>Mind-blowing.<br>Head-turning.</h1>
+        <p class="sub">The most advanced Mac laptops ever.</p>
+      </div>
+      
+      <div class="laptop-container" id="laptopContainer">
+        <div class="laptop" id="laptop">
+          <div class="laptop-lid" id="laptopLid">
+            <div class="laptop-screen">
+              <div class="screen-content">
+                <div class="screen-glow"></div>
+                <div class="screen-text">macOS</div>
+              </div>
+            </div>
+          </div>
+          <div class="laptop-base"></div>
+          <div class="keyboard-glow" id="keyboardGlow"></div>
+        </div>
+      </div>
+
+      <div class="hero-info" id="heroInfo">
+        <p>Built on the breakthrough M4 architecture. The most powerful chips ever in a Mac.</p>
+        <p>Up to 22 hours of battery life. The longest ever in a Mac.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Performance Section -->
+  <section class="performance" id="performance">
+    <div class="performance-header scroll-animated">
+      <p class="section-label">Performance</p>
+      <h2 class="section-title">Scary fast.</h2>
+      <p class="section-body" style="margin: 0 auto;">
+        M4 Pro and M4 Max chips feature the world's fastest CPU cores and a massively more powerful GPU. Fly through the most demanding workflows.
+      </p>
+    </div>
+
+    <div class="chip-selector scroll-animated delay-1">
+      <button class="chip-tab active" data-chip="pro">M4 Pro</button>
+      <button class="chip-tab" data-chip="max">M4 Max</button>
+    </div>
+
+    <div class="performance-grid" id="perfGrid">
+      <div class="perf-card scroll-animated delay-1">
+        <h3>CPU Performance</h3>
+        <div class="perf-value" id="cpuValue">Up to 14 cores</div>
+        <div class="bar-chart">
+          <div class="bar-fill pro" id="cpuBar" style="width: 0%"></div>
+        </div>
+        <p class="perf-multiplier" id="cpuMult">Up to 1.9x faster than M1 Pro</p>
+      </div>
+
+      <div class="perf-card scroll-animated delay-2">
+        <h3>GPU Performance</h3>
+        <div class="perf-value" id="gpuValue">Up to 20 cores</div>
+        <div class="bar-chart">
+          <div class="bar-fill pro" id="gpuBar" style="width: 0%"></div>
+        </div>
+        <p class="perf-multiplier" id="gpuMult">Up to 2x faster graphics</p>
+      </div>
+
+      <div class="perf-card scroll-animated delay-3">
+        <h3>Neural Engine</h3>
+        <div class="perf-value" id="neuralValue">16-core</div>
+        <div class="bar-chart">
+          <div class="bar-fill pro" id="neuralBar" style="width: 0%"></div>
+        </div>
+        <p class="perf-multiplier" id="neuralMult">Up to 3.4x faster ML</p>
+      </div>
+
+      <div class="perf-card scroll-animated delay-1">
+        <h3>Memory Bandwidth</h3>
+        <div class="perf-value" id="memValue">273 GB/s</div>
+        <div class="bar-chart">
+          <div class="bar-fill pro" id="memBar" style="width: 0%"></div>
+        </div>
+        <p class="perf-multiplier" id="memMult">75% more bandwidth</p>
+      </div>
+
+      <div class="perf-card scroll-animated delay-2">
+        <h3>Media Engine</h3>
+        <div class="perf-value" id="mediaValue">ProRes / H.264</div>
+        <div class="bar-chart">
+          <div class="bar-fill pro" id="mediaBar" style="width: 0%"></div>
+        </div>
+        <p class="perf-multiplier" id="mediaMult">Multiple 8K streams</p>
+      </div>
+
+      <div class="perf-card scroll-animated delay-3">
+        <h3>Battery Life</h3>
+        <div class="perf-value" id="batValue">22 hours</div>
+        <div class="bar-chart">
+          <div class="bar-fill pro" id="batBar" style="width: 0%"></div>
+        </div>
+        <p class="perf-multiplier" id="batMult">Longest ever in a Mac</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bento Grid Section -->
+  <section class="bento" id="features">
+    <div class="bento-header scroll-animated">
+      <p class="section-label">Features</p>
+      <h2 class="section-title">Every detail.<br>Considered.</h2>
+    </div>
+
+    <div class="bento-grid">
+      <div class="bento-card wide tall scroll-animated" data-card>
+        <h3>Liquid Retina XDR</h3>
+        <p>Extreme Dynamic Range meets micro-LED precision. 1000 nits sustained, 1600 nits peak.</p>
+        <div class="bento-visual display-visual"></div>
+      </div>
+
+      <div class="bento-card scroll-animated delay-1" data-card>
+        <h3>Thermal Efficiency</h3>
+        <p>Advanced thermal architecture moves 50% more air. Quiet even under heavy load.</p>
+        <div class="bento-visual thermal-visual">
+          <div class="fan-icon"></div>
+        </div>
+      </div>
+
+      <div class="bento-card scroll-animated delay-2" data-card>
+        <h3>Studio Mics</h3>
+        <p>Three-mic array with directional beamforming. Sounds like you're in the same room.</p>
+        <div class="bento-visual mic-visual">
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+        </div>
+      </div>
+
+      <div class="bento-card wide scroll-animated delay-1" data-card>
+        <h3>Ports of Call</h3>
+        <p>Three Thunderbolt 5 ports, HDMI, SDXC, MagSafe 3, and a headphone jack with high-impedance support.</p>
+        <div class="bento-visual ports-visual">
+          <div class="port"></div>
+          <div class="port"></div>
+          <div class="port"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Camera / Audio Section -->
+  <section class="camera-section">
+    <div class="camera-bg"></div>
+    <div class="camera-content scroll-animated">
+      <div class="camera-lens"></div>
+      <h2>Look sharp.<br>Sound great.</h2>
+      <p>12MP Center Stage camera with advanced image signal processor. Studio-quality three-mic array. Six-speaker sound system with force-canceling woofers.</p>
+    </div>
+  </section>
+
+  <!-- Specs Section -->
+  <section class="specs" id="specs">
+    <div class="specs-header scroll-animated">
+      <p class="section-label">Configure</p>
+      <h2 class="section-title">Choose your MacBook Pro.</h2>
+    </div>
+
+    <div class="specs-grid">
+      <div class="spec-card scroll-animated">
+        <div class="model-img">💻</div>
+        <div class="model-name">14" MacBook Pro</div>
+        <div class="model-price">From $1,599</div>
+        <div class="spec-row">
+          <div class="spec-label">Chip</div>
+          <div class="spec-value">M4</div>
+        </div>
+        <div class="spec-row">
+          <div class="spec-label">CPU Cores</div>
+          <div class="spec-value">10-core</div>
+        </div>
+        <div class="spec-row">
+          <div class="spec-label">GPU Cores</div>
+          <div class="spec-value">10-core</div>
+        </div>
+        <div class="spec-row">
+          <div class="spec-label">Memory</div>
+          <div class="spec-value">16GB unified</div>
+        </div>
+        <div class="spec-row">
+          <div class="spec-label">Storage</div>
+          <div class="spec-value">512GB SSD</div>
+        </div>
+        <div class="spec-row">
+          <div class="spec-label">Display</div>
+          <div class="spec-value">14.2" XDR</div>
+        </div>
+        <button class="btn-buy spec-cta">Buy</button>
+      </div>
+
+      <div class="spec-card scroll-animated delay-1">
+        <div class="model-img">💻</div>
+        <div class="model-name">14" MacBook Pro</div>
+        <div class="model-price">From $1,999</div>
+        <div class="spec-row">
+          <div class="spec-label">Chip</div>
+          <div class="spec-value">M4 Pro</div>
+        </div>
+        <div class="spec-row">
+          <div class="spec-label">CPU Cores</div>
+          <div class="spec-value">14-core</div>
+        </div>
+        <div class="spec-row">
+          <div class="spec-label">GPU Cores</div>
+          <div class="spec-value">20-core</div>
+        </div>
+        <div class="spec-row">
+          <div class="spec-label">Memory</div>
+          <div class="spec-value">24GB unified</div>
+        </div>
+        <div class="spec-row">
+          <div class="spec-label">Storage</div>
+          <div class="spec-value">512GB SSD</div>
+        </div>
+        <div class="spec-row">
+          <div class="spec-label">Display</div>
+          <div class="spec-value">14.2" XDR</div>
+        </div>
+        <button class="btn-buy spec-cta">Buy</button>
+      </div>
+
+      <div class="spec-card scroll-animated delay-2">
+        <div class="model-img">💻</div>
+        <div class="model-name">16" MacBook Pro</div>
+        <div class="model-price">From $2,499</div>
+        <div class="spec-row">
+          <div class="spec-label">Chip</div>
+          <div class="spec-value">M4 Max</div>
+        </div>
+        <div class="spec-row">
+          <div class="spec-label">CPU Cores</div>
+          <div class="spec-value">16-core</div>
+        </div>
+        <div class="spec-row">
+          <div class="spec-label">GPU Cores</div>
+          <div class="spec-value">40-core</div>
+        </div>
+        <div class="spec-row">
+          <div class="spec-label">Memory</div>
+          <div class="spec-value">36GB unified</div>
+        </div>
+        <div class="spec-row">
+          <div class="spec-label">Storage</div>
+          <div class="spec-value">1TB SSD</div>
+        </div>
+        <div class="spec-row">
+          <div class="spec-label">Display</div>
+          <div class="spec-value">16.2" XDR</div>
+        </div>
+        <button class="btn-buy spec-cta">Buy</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <p>Copyright &copy; 2026 Apple Inc. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Use</a>
+        <a href="#">Sales Policy</a>
+        <a href="#">Legal</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ============================================
+    // SCROLL ORCHESTRATION
+    // ============================================
+    
+    const subNav = document.getElementById('subNav');
+    const heroHeadline = document.getElementById('heroHeadline');
+    const laptopContainer = document.getElementById('laptopContainer');
+    const laptopLid = document.getElementById('laptopLid');
+    const keyboardGlow = document.getElementById('keyboardGlow');
+    const heroInfo = document.getElementById('heroInfo');
+
+    // Hero scroll scrubbing
+    function updateHeroScroll() {
+      const hero = document.querySelector('.hero');
+      const rect = hero.getBoundingClientRect();
+      const heroHeight = hero.offsetHeight;
+      const scrollProgress = Math.max(0, Math.min(1, -rect.top / (heroHeight - window.innerHeight)));
+      
+      // Headline fade out (0% - 20%)
+      const headlineOpacity = Math.max(0, 1 - scrollProgress * 5);
+      const headlineScale = 1 + scrollProgress * 0.2;
+      const headlineY = -scrollProgress * 100;
+      heroHeadline.style.opacity = headlineOpacity;
+      heroHeadline.style.transform = `scale(${headlineScale}) translateY(${headlineY}px)`;
+      
+      // Laptop scale (0% - 30%)
+      const laptopScale = 0.6 + scrollProgress * 0.8;
+      laptopContainer.style.transform = `scale(${Math.min(1, laptopScale)})`;
+      
+      // Laptop lid open (10% - 40%)
+      const lidProgress = Math.max(0, Math.min(1, (scrollProgress - 0.1) * 3.33));
+      const lidAngle = -110 + (lidProgress * 110);
+      laptopLid.style.transform = `rotateX(${lidAngle}deg)`;
+      
+      // Keyboard glow (15% - 35%)
+      const glowOpacity = Math.max(0, Math.min(1, (scrollProgress - 0.15) * 5));
+      keyboardGlow.style.opacity = glowOpacity;
+      
+      // Hero info (25% - 50%)
+      const infoOpacity = Math.max(0, Math.min(1, (scrollProgress - 0.25) * 4));
+      heroInfo.style.opacity = infoOpacity;
+    }
+
+    // Sub-nav visibility
+    function updateSubNav() {
+      if (window.scrollY > window.innerHeight * 0.5) {
+        subNav.classList.add('visible');
+      } else {
+        subNav.classList.remove('visible');
+      }
+    }
+
+    // Combined scroll handler
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          updateHeroScroll();
+          updateSubNav();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+
+    // Initial call
+    updateHeroScroll();
+    updateSubNav();
+
+    // ============================================
+    // INTERSECTION OBSERVER (Scroll Animations)
+    // ============================================
+    
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          
+          // Trigger bar animations if in performance section
+          if (entry.target.closest('.performance-grid')) {
+            animateBars();
+          }
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.scroll-animated').forEach(el => {
+      observer.observe(el);
+    });
+
+    // ============================================
+    // PERFORMANCE TABS & CHARTS
+    // ============================================
+    
+    const chipData = {
+      pro: {
+        cpu: { value: 'Up to 14 cores', width: 65, mult: 'Up to 1.9x faster than M1 Pro' },
+        gpu: { value: 'Up to 20 cores', width: 70, mult: 'Up to 2x faster graphics' },
+        neural: { value: '16-core', width: 60, mult: 'Up to 3.4x faster ML' },
+        mem: { value: '273 GB/s', width: 55, mult: '75% more bandwidth' },
+        media: { value: 'ProRes / H.264', width: 75, mult: 'Multiple 8K streams' },
+        bat: { value: '22 hours', width: 90, mult: 'Longest ever in a Mac' }
+      },
+      max: {
+        cpu: { value: 'Up to 16 cores', width: 85, mult: 'Up to 2.2x faster than M1 Max' },
+        gpu: { value: 'Up to 40 cores', width: 95, mult: 'Up to 2.5x faster graphics' },
+        neural: { value: '16-core', width: 80, mult: 'Up to 4x faster ML' },
+        mem: { value: '546 GB/s', width: 90, mult: '2x more bandwidth' },
+        media: { value: '2x Media Engine', width: 95, mult: 'Multiple ProRes 8K' },
+        bat: { value: '22 hours', width: 90, mult: 'Same incredible battery' }
+      }
+    };
+
+    const chipTabs = document.querySelectorAll('.chip-tab');
+    let currentChip = 'pro';
+
+    function updateBars(chip) {
+      const data = chipData[chip];
+      const suffix = chip === 'pro' ? 'pro' : 'max';
+      
+      Object.keys(data).forEach(key => {
+        const valueEl = document.getElementById(`${key}Value`);
+        const barEl = document.getElementById(`${key}Bar`);
+        const multEl = document.getElementById(`${key}Mult`);
+        
+        // Animate value text
+        valueEl.style.opacity = '0';
+        setTimeout(() => {
+          valueEl.textContent = data[key].value;
+          valueEl.style.opacity = '1';
+        }, 150);
+        
+        // Animate bar
+        barEl.style.width = '0%';
+        barEl.className = `bar-fill ${suffix}`;
+        setTimeout(() => {
+          barEl.style.width = `${data[key].width}%`;
+        }, 300);
+        
+        // Update multiplier
+        multEl.textContent = data[key].mult;
+      });
+    }
+
+    function animateBars() {
+      const data = chipData[currentChip];
+      Object.keys(data).forEach(key => {
+        const barEl = document.getElementById(`${key}Bar`);
+        barEl.style.width = `${data[key].width}%`;
+      });
+    }
+
+    chipTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        chipTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        currentChip = tab.dataset.chip;
+        updateBars(currentChip);
+      });
+    });
+
+    // ============================================
+    // BENTO CARD GLOW EFFECT
+    // ============================================
+    
+    document.querySelectorAll('.bento-card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        card.style.setProperty('--mouse-x', `${x}px`);
+        card.style.setProperty('--mouse-y', `${y}px`);
+      });
+    });
+
+    // ============================================
+    // SMOOTH SCROLL FOR NAV LINKS
+    // ============================================
+    
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // ============================================
+    // CAMERA LENS PARALLAX
+    // ============================================
+    
+    const cameraLens = document.querySelector('.camera-lens');
+    const cameraSection = document.querySelector('.camera-section');
+    
+    window.addEventListener('scroll', () => {
+      const rect = cameraSection.getBoundingClientRect();
+      const progress = 1 - (rect.top / window.innerHeight);
+      if (progress > 0 && progress < 2) {
+        const scale = 0.8 + (progress * 0.4);
+        cameraLens.style.transform = `scale(${Math.min(1.3, scale)})`;
+      }
+    });
+  </script>
+</body>
+</html>
